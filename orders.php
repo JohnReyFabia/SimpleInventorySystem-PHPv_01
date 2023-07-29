@@ -86,7 +86,7 @@ if($_GET['o'] == 'add') {
 			  	<thead>
 			  		<tr>			  			
 			  			<th style="width:40%;">Product</th>
-			  			<th style="width:20%;">Size</th>
+			  			<th style="width:20%;">Category</th>
 			  			<th style="width:10%;">Available Quantity</th>
 			  			<th style="width:15%;">Quantity <br><small>(Enter to update)</small></th>			  			
 			  			<th style="width:25%;">Total items left</th>			  			
@@ -115,10 +115,17 @@ if($_GET['o'] == 'add') {
 		  						</select>
 			  					</div>
 			  				</td>
-			  				<td style="padding-left:20px;">			  					
-			  					<input type="text" name="brand[]" id="brand<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />			  					
-			  					<input type="hidden" name="brandValue[]" id="brandValue<?php echo $x; ?>" autocomplete="off" class="form-control" />			  					
-			  				</td>
+			  				 <!-- Display the categories here -->
+        <input type="text" name="categories[]" id="categories<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
+        <input type="hidden" name="categoriesValue[]" id="categorieValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+      </td>
+      <td style="padding-left:20px;">
+        <div class="form-group">
+          <!-- Display the available categories_id here -->
+          <p id="available_categories<?php echo $x; ?>"></p>
+        </div>
+      </td>
+	  
 							<td style="padding-left:20px;">
 			  					<div class="form-group">
 									<p id="available_quantity<?php echo $x; ?>"></p>
@@ -221,7 +228,7 @@ if($_GET['o'] == 'add') {
 			  	<thead>
 			  		<tr>			  			
 			  			<th style="width:40%;">Equipment</th>
-			  			<th style="width:20%;">Size</th>
+			  			<th style="width:20%;">Category</th>
 			  			<th style="width:15%;">Available Quantity</th>			  			
 			  			<th style="width:15%;">Quantity</th>			  			
 			  			<th style="width:15%;">Total Items Left</th>			  			
@@ -265,11 +272,21 @@ if($_GET['o'] == 'add') {
 			  						?>
 		  						</select>
 			  					</div>
+								
 			  				</td>
-							  <td style="padding-left: 20px;">
-    <input type="text" name="brand[]" id="brand<?php echo $x; ?>" autocomplete="off" class="form-control" value="<?php echo $orderItemData['brand']; ?>" />
-    <input type="hidden" name="brandValue[]" id="brandValue<?php echo $x; ?>" autocomplete="off" class="form-control" value="<?php echo $orderItemData['brand']; ?>" />
-</td>
+							  <!-- categories -->
+							  <td style="padding-left:20px;">
+        <!-- Display the categories here -->
+        <input type="text" name="categories[]" id="categories<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
+        <input type="hidden" name="categoriesValue[]" id="categorieValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+      </td>
+      <td style="padding-left:20px;">
+        <div class="form-group">
+          <!-- Display the available categories_id here -->
+          <p id="available_categories<?php echo $x; ?>"></p>
+        </div>
+      </td>
+							<!-- categories -->
 
 							<td style="padding-left:20px;">
 			  					<div class="form-group">
@@ -331,10 +348,10 @@ if($_GET['o'] == 'add') {
 </div> 					  				   
       	        
       </div> <!--/modal-body-->
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
       	<button type="button" class="btn btn-danger" data-dismiss="modal"> <i class="glyphicon glyphicon-remove-sign"></i> Close</button>
         <button type="button" class="btn btn-primary" id="updatePaymentOrderBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-ok-sign"></i> Save changes</button>	
-      </div>           
+      </div>            -->
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

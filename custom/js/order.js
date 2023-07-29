@@ -433,47 +433,57 @@ function removeProductRow(row = null) {
 }
 
 // select on product data
-function getProductData(row = null) {
-    if (row) {
-        var productId = $("#productName" + row).val();
+// ...
 
-        if (productId == "") {
-            $("#brand" + row).val("");
-            $("#quantity" + row).val("");
-            $("#total" + row).val("");
-        } else {
-            $.ajax({
-                url: 'php_action/fetchSelectedProduct.php',
-                type: 'post',
-                data: { productId: productId },
-                dataType: 'json',
-                success: function (response) {
-                    // Setting the brand value into the brand input field
-                    $("#brand" + row).val(response.brand);
-                    $("#brandValue" + row).val(response.brand);
+// Function to get product data and display categories
+function getProductData(rowId) {
+  if (rowId) {
+    var productId = $("#productName" + rowId).val();
 
-                    $("#quantity" + row).val(1);
-                    $("#available_quantity" + row).text(response.quantity);
-
-                    var brandValue = parseFloat(response.product_brand);
-                    var quantityValue = parseInt($("#quantity" + row).val());
-                    var total = brandValue * quantityValue;
-
-                    // Format the total to two decimal places
-                    total = total.toFixed(2);
-
-                    $("#total" + row).val(total);
-                    $("#totalValue" + row).val(total);
-
-                    subAmount();
-                } // /success
-            }); // /ajax function to fetch the product data
-        }
-
+    if (productId == "") {
+      $("#categories" + rowId).val("");
+      $("#categorieValue" + rowId).val("");
+      $("#quantity" + rowId).val("");
+      $("#total" + rowId).val("");
     } else {
-        alert('No row! Please refresh the page.');
+      $.ajax({
+        url: 'php_action/fetchSelectedProduct.php',
+        type: 'post',
+        data: { productId: productId },
+        dataType: 'json',
+        success: function (response) {
+          // Setting the brand value into the brand input field
+    
+          // Display the categories and categories_id
+          $("#categories" + rowId).val(response.categories);
+          $("#categorieValue" + rowId).val(response.categoriesId);
+          $("#available_categories" + rowId).text(response.categories);
+
+          $("#quantity" + rowId).val(1);
+          $("#available_quantity" + rowId).text(response.quantity);
+
+
+          var quantityValue = parseInt($("#quantity" + rowId).val());
+          var total = brandValue * quantityValue;
+
+          // Format the total to two decimal places
+          total = total.toFixed(2);
+
+          $("#total" + rowId).val(total);
+          $("#totalValue" + rowId).val(total);
+
+          subAmount();
+        } // /success
+      }); // /ajax function to fetch the product data
     }
+
+  } else {
+    alert('No row! Please refresh the page.');
+  }
 } // /select on product data
+
+
+
 
 // table total
 function getTotal(row = null) {

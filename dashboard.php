@@ -14,9 +14,9 @@ $lowStockSql = "SELECT * FROM product WHERE quantity <= 3 AND status = 1";
 $lowStockQuery = $connect->query($lowStockSql);
 $countLowStock = $lowStockQuery->num_rows;
 
-$userwisesql = "SELECT users.username , SUM(orders.grand_total) as totalorder FROM orders INNER JOIN users ON orders.user_id = users.user_id WHERE orders.order_status = 1 GROUP BY orders.user_id";
-$userwiseQuery = $connect->query($userwisesql);
-$userwieseOrder = $userwiseQuery->num_rows;
+// $userwisesql = "SELECT users.username , SUM(orders.total) as totalorder FROM orders INNER JOIN users ON orders.user_id = users.user_id WHERE orders.order_status = 1 GROUP BY orders.user_id";
+// $userwiseQuery = $connect->query($userwisesql);
+// $userwieseOrder = $userwiseQuery->num_rows;
 
 $connect->close();
 
@@ -90,7 +90,7 @@ $connect->close();
 		<br/>
 	</div>
 	
-	<?php  if(isset($_SESSION['userId']) && $_SESSION['userId']==1) { ?>
+	<!-- <?php  if(isset($_SESSION['userId']) && $_SESSION['userId']==1) { ?>
 	<div class="col-md-8">
 		<div class="panel panel-default">
 			<div class="panel-heading"> <i class="glyphicon glyphicon-calendar"></i> User Wise Order</div>
@@ -110,7 +110,7 @@ $connect->close();
 							
 						</tr>
 						
-					<?php } ?>
+					<?php } ?> -->
 				</tbody>
 				</table>
 				<!--<div id="calendar"></div>-->
