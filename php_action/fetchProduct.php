@@ -22,6 +22,7 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_array()) {
         $productId = $row[0];
 
+
         // Determine active status
         $active = ($row[9] == 1) ? "<label class='label label-success'>Available</label>" : "<label class='label label-danger'>Not Available</label>";
 
