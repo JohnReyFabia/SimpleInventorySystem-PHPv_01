@@ -2,11 +2,12 @@
 
 require_once 'core.php';
 
-$sql = <<<EOT
+$sql = "
 SELECT
     orders.order_id,
     orders.order_date,
     orders.client_name,
+	orders.student_Number,
     product.active
 FROM
     orders
@@ -14,8 +15,9 @@ INNER JOIN order_item ON order_item.order_id = orders.order_id
 INNER JOIN product ON product.product_id = order_item.product_id
 WHERE
     orders.order_status = 1
-EOT;
+";
 $result = $connect->query($sql);
+
 
 
 
@@ -52,12 +54,9 @@ if ($result->num_rows > 0) {
 	  <ul class="dropdown-menu">
 	    <li><a href="orders.php?o=editOrd&i=' . $orderId . '" id="editOrderModalBtn"> <i class="glyphicon glyphicon-edit"></i> Edit</a></li>
 	    
-	    <li><a type="button" data-toggle="modal" id="paymentOrderModalBtn" data-target="#paymentOrderModal" onclick="paymentOrder(' . $orderId . ')"> <i class="glyphicon glyphicon-save"></i> Payment</a></li>
-
 	    <li><a type="button" onclick="printOrder(' . $orderId . ')"> <i class="glyphicon glyphicon-print"></i> Print </a></li>
 	    
-	    <li><a type="button" data-toggle="modal" data-target="#removeOrderModal" id="removeOrderModalBtn" onclick="removeOrder(' . $orderId . ')"> <i class="glyphicon glyphicon-trash"></i> Remove</a></li>       
-	  </ul>
+	     </ul>
 	</div>';
 
 		$output['data'][] = array(

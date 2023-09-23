@@ -27,6 +27,7 @@ $(document).ready(function() {
 
 		// create order form function
 		$("#createOrderForm").unbind('submit').bind('submit', function() {
+			console.log("dsa")
 			var form = $(this);
 
 			$('.form-group').removeClass('has-error').removeClass('has-success');
@@ -34,7 +35,7 @@ $(document).ready(function() {
 				
 			var orderDate = $("#orderDate").val();
 			var clientName = $("#clientName").val();
-			var clientContact = $("#clientContact").val();
+			var studentNumber = $("#studentNumber").val();
 			var paymentType = $("#paymentType").val();
 			var paymentStatus = $("#paymentStatus").val();		
 
@@ -53,11 +54,11 @@ $(document).ready(function() {
 				$('#clientName').closest('.form-group').addClass('has-success');
 			} // /else
 
-			if(clientContact == "") {
-				$("#clientContact").after('<p class="text-danger"> The Contact field is required </p>');
-				$('#clientContact').closest('.form-group').addClass('has-error');
+			if(studentNumber == "") {
+				$("#studentNumber").after('<p class="text-danger"> The Student Number field is required </p>');
+				$('#studentNumber').closest('.form-group').addClass('has-error');
 			} else {
-				$('#clientContact').closest('.form-group').addClass('has-success');
+				$('#studentNumber').closest('.form-group').addClass('has-success');
 			} // /else
 
 
@@ -118,10 +119,11 @@ $(document).ready(function() {
 	   	} // for       	
 	   	
 
-			if(orderDate && clientName && clientContact && paymentStatus) {
+			if(orderDate && clientName && studentNumber && paymentStatus) {
 				if(validateProduct == true && validateQuantity == true) {
 					// create order button
 					// $("#createOrderBtn").button('loading');
+					console.log("Here")
 
 					$.ajax({
 						url : form.attr('action'),
@@ -188,7 +190,7 @@ $(document).ready(function() {
 				
 			var orderDate = $("#orderDate").val();
 			var clientName = $("#clientName").val();
-			var clientContact = $("#clientContact").val();
+			var studentNumber = $("#studentNumber").val();
 			var paymentStatus = $("#paymentStatus").val();		
 
 			// form validation 
@@ -206,11 +208,11 @@ $(document).ready(function() {
 				$('#clientName').closest('.form-group').addClass('has-success');
 			} // /else
 
-			if(clientContact == "") {
-				$("#clientContact").after('<p class="text-danger"> The Contact field is required </p>');
-				$('#clientContact').closest('.form-group').addClass('has-error');
+			if(studentNumber == "") {
+				$("#studentNumber").after('<p class="text-danger"> The Student Number field is required </p>');
+				$('#studentNumber').closest('.form-group').addClass('has-error');
 			} else {
-				$('#clientContact').closest('.form-group').addClass('has-success');
+				$('#studentNumber').closest('.form-group').addClass('has-success');
 			} // /else
 
 			
@@ -264,7 +266,7 @@ $(document).ready(function() {
 	   	} // for       	
 	   	
 
-			if(orderDate && clientName && clientContact && paymentStatus) {
+			if(orderDate && clientName && studentNumber && paymentStatus) {
 				if(validateProduct == true && validateQuantity == true) {
 					// create order button
 					// $("#createOrderBtn").button('loading');
@@ -388,20 +390,27 @@ function addRow() {
 					tr += '</select>'+
 					'</div>'+
 				'</td>'+
-				'<td style="padding-left:20px;"">'+
-					'<input type="text" name="brand[]" id="brand'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
-					'<input type="hidden" name="brandValue[]" id="brandValue'+count+'" autocomplete="off" class="form-control" />'+
-				'</td style="padding-left:20px;">'+
+
+				'<td style="padding-left:20px;">'+
+					'<div class="form-group">'+
+					'<p id="available_categories'+count+'"></p>'+
+					' <input type="hidden" name="categoryId[]" id="categoryId'+count+'" autocomplete="off" class="form-control" />' +
+					'</div>'+
+				'</td>'+
+				
 				'<td style="padding-left:20px;">'+
 					'<div class="form-group">'+
 					'<p id="available_quantity'+count+'"></p>'+
+					' <input type="hidden" name="available_quantity[]" id="available_quantityValue'+count+'" autocomplete="off" class="form-control" />' +
 					'</div>'+
 				'</td>'+
+
 				'<td style="padding-left:20px;">'+
 					'<div class="form-group">'+
 					'<input type="number" name="quantity[]" id="quantity'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
 					'</div>'+
 				'</td>'+
+				
 				'<td style="padding-left:20px;">'+
 					'<input type="text" name="total[]" id="total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
 					'<input type="hidden" name="totalValue[]" id="totalValue'+count+'" autocomplete="off" class="form-control" />'+
@@ -456,15 +465,18 @@ function getProductData(rowId) {
     
           // Display the categories and categories_id
           $("#categories" + rowId).val(response.categories);
-          $("#categorieValue" + rowId).val(response.categoriesId);
-          $("#available_categories" + rowId).text(response.categories);
+          $("#categoryId" + rowId).val(response.categories_id);
+          $("#available_categories" + rowId).text(response.categories_id);
+          $("#available_quantityValue" + rowId).val(response.quantity);
+
 
           $("#quantity" + rowId).val(1);
           $("#available_quantity" + rowId).text(response.quantity);
 
 
-          var quantityValue = parseInt($("#quantity" + rowId).val());
-          var total = brandValue * quantityValue;
+        //   var quantityValue = parseInt($("#quantity" + rowId).val());
+        //   var quantityValue = 0;
+          var total = response.quantity * quantityValue;
 
           // Format the total to two decimal places
           total = total.toFixed(2);
@@ -488,7 +500,7 @@ function getProductData(rowId) {
 // table total
 function getTotal(row = null) {
 	if(row) {
-		var total = Number($("#brand"+row).val()) * Number($("#quantity"+row).val());
+		var total = Number($("#available_quantityValue"+row).val()) - Number($("#quantity"+row).val());
 		total = total.toFixed(2);
 		$("#total"+row).val(total);
 		$("#totalValue"+row).val(total);

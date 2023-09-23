@@ -8,7 +8,7 @@ if($_POST) {
 
 	$locationName = $_POST['editLocationName'];
   $locationStatus = $_POST['editLocationStatus']; 
-  $locationId = $_POST['editLocationId'];
+  $locationId = $_POST['locationId'];
 
 	$sql = "UPDATE locations SET location_name = '$locationName', location_active = '$locationStatus' WHERE location_Id = '$locationId'";
 
@@ -17,7 +17,7 @@ if($_POST) {
 		$valid['messages'] = "Successfully Updated";	
 	} else {
 	 	$valid['success'] = false;
-	 	$valid['messages'] = "Error while updating the categories";
+	 	$valid['messages'] = "Error while updating the Location";
 	}
 	 
 	$connect->close();

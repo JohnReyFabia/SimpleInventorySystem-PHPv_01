@@ -61,24 +61,23 @@ if($_GET['o'] == 'add') {
 
 			<div class="success-messages"></div> <!--/success-messages-->
 
-  		<form class="form-horizontal" method="POST" action="php_action/createOrder.php" id="createOrderForm">
-
+  		<form class="form-horizontal" method="POST" action="php_action/createOrder.php">
 			  <div class="form-group">
 			    <label for="orderDate" class="col-sm-2 control-label">Request Date</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="orderDate" name="orderDate" autocomplete="off" />
+			      <input type="text" class="form-control" id="orderDate" name="orderDate" autocomplete="off" required />
 			    </div>
 			  </div> <!--/form-group-->
 			  <div class="form-group">
 			    <label for="clientName" class="col-sm-2 control-label">Name</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="clientName" name="clientName" placeholder="Borrowers Name" autocomplete="off" />
+			      <input type="text" class="form-control" id="clientName" name="clientName" placeholder="Borrowers Name" autocomplete="off" required />
 			    </div>
 			  </div> <!--/form-group-->
 			  <div class="form-group">
-			    <label for="clientContact" class="col-sm-2 control-label">Student Number</label>
+			    <label for="studentNumber" class="col-sm-2 control-label">Student Number</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="clientContact" name="clientContact" placeholder="Students Number" autocomplete="off" />
+			      <input type="text" class="form-control" id="studentNumber" name="studentNumber" placeholder="Students Number" autocomplete="off" required />
 			    </div>
 			  </div> <!--/form-group-->			  
 
@@ -116,19 +115,21 @@ if($_GET['o'] == 'add') {
 			  					</div>
 			  				</td>
 			  				 <!-- Display the categories here -->
-        <input type="text" name="categories[]" id="categories<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
-        <input type="hidden" name="categoriesValue[]" id="categorieValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+       
       </td>
       <td style="padding-left:20px;">
         <div class="form-group">
           <!-- Display the available categories_id here -->
           <p id="available_categories<?php echo $x; ?>"></p>
+        <input type="hidden" name="categoryId[]" id="categoryId<?php echo $x; ?>" autocomplete="off" class="form-control" />
         </div>
       </td>
 	  
 							<td style="padding-left:20px;">
 			  					<div class="form-group">
 									<p id="available_quantity<?php echo $x; ?>"></p>
+									<input type="hidden" id="available_quantityValue<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x ?>)" autocomplete="off" class="form-control" min="1" />
+
 			  					</div>
 			  				</td>
 			  				<td style="padding-left:20px;">
@@ -198,7 +199,7 @@ if($_GET['o'] == 'add') {
 
   			<?php $orderId = $_GET['i'];
 
-  			$sql = "SELECT orders.order_id, orders.order_date, orders.client_name, orders.client_contact, orders.sub_total, orders.vat, orders.total_amount, orders.discount, orders.grand_total, orders.paid, orders.due, orders.payment_type, orders.payment_status,orders.payment_place,orders.gstn FROM orders 	
+  			$sql = "SELECT orders.order_id, orders.order_date, orders.client_name, orders.student_Number,  orders.payment_status FROM orders 	
 					WHERE orders.order_id = {$orderId}";
 
 				$result = $connect->query($sql);
@@ -218,9 +219,9 @@ if($_GET['o'] == 'add') {
 			    </div>
 			  </div> <!--/form-group-->
 			  <div class="form-group">
-			    <label for="clientContact" class="col-sm-2 control-label">Contact</label>
+			    <label for="studentNumber" class="col-sm-2 control-label">Student Number</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="clientContact" name="clientContact" placeholder="Contact Number" autocomplete="off" value="<?php echo $data[3] ?>" />
+			      <input type="text" class="form-control" id="studentNumber" name="studentNumber" placeholder="Contact Number" autocomplete="off" value="<?php echo $data[3] ?>" />
 			    </div>
 			  </div> <!--/form-group-->			  
 

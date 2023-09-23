@@ -9,12 +9,11 @@ if($_POST) {
 
 	$orderDate 						= date('Y-m-d', strtotime($_POST['orderDate']));
   $clientName 					= $_POST['clientName'];
-  $clientContact 				= $_POST['clientContact'];
-  $totalAmountValue     = $_POST['totalAmountValue'];
-  $paymentStatus 				= $_POST['paymentStatus'];
+  $studentNumber 				= $_POST['studentNumber'];
+    $paymentStatus 				= $_POST['paymentStatus'];
 	$userid 				= $_SESSION['userId'];
 				
-	$sql = "UPDATE orders SET order_date = '$orderDate', client_name = '$clientName', client_contact = '$clientContact',  total_amount = '$totalAmountValue',  payment_status = '$paymentStatus', order_status = 1 ,user_id = '$userid' WHERE order_id = {$orderId}";	
+	$sql = "UPDATE orders SET order_date = '$orderDate', client_name = '$clientName', student_Number = '$studentNumber',  payment_status = '$paymentStatus', order_status = 1 ,user_id = '$userid' WHERE order_id = {$orderId}";	
 	$connect->query($sql);
 	
 	$readyToUpdateOrderItem = false;
@@ -60,8 +59,8 @@ if($_POST) {
 					$connect->query($updateProductTable);
 
 					// add into order_item
-				$orderItemSql = "INSERT INTO order_item (order_id, product_id, quantity, brand, total, order_item_status) 
-				VALUES ({$orderId}, '".$_POST['productName'][$x]."', '".$_POST['quantity'][$x]."', '".$_POST['brandValue'][$x]."', '".$_POST['totalValue'][$x]."', 1)";
+				$orderItemSql = "INSERT INTO order_item (order_id, product_id, quantity, total, order_item_status) 
+				VALUES ({$orderId}, '".$_POST['productName'][$x]."', '".$_POST['quantity'][$x]."', '".$_POST['totalValue'][$x]."', 1)";
 
 				$connect->query($orderItemSql);		
 			} // while	
