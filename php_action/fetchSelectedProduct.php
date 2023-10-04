@@ -4,7 +4,7 @@ require_once 'core.php';
 
 $productId = $_POST['productId'];
 
-$sql = "SELECT product_id, product_name, product_image, brand_id, categories_id, location_id, quantity, SerialNumber,PropertyNumber, active, status, remarks FROM product WHERE product_id = $productId";
+$sql = "SELECT p.*, c.categories_name FROM product p INNER JOIN categories c ON c.categories_id = p.categories_id WHERE product_id = $productId";
 $result = $connect->query($sql);
 
 if($result->num_rows > 0) { 

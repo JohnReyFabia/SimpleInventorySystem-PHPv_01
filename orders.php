@@ -98,7 +98,7 @@ if($_GET['o'] == 'add') {
 			  		$arrayNumber = 0;
 			  		for($x = 1; $x < 2; $x++) { ?>
 			  			<tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">			  				
-			  				<td style="margin-left:20px;">
+			  				<td style="margin-left:20px; padding: 2px 40px 2px 20px">
 			  					<div class="form-group">
 
 			  					<select class="form-control" name="productName[]" id="productName<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)" >
@@ -109,22 +109,21 @@ if($_GET['o'] == 'add') {
 
 			  							while($row = $productData->fetch_array()) {									 		
 			  								echo "<option value='".$row['product_id']."' id='changeProduct".$row['product_id']."'>".$row['product_name']."</option>";
-										 	} // /while 
+										} // /while 
 
 			  						?>
 		  						</select>
 			  					</div>
 			  				</td>
 			  				 <!-- Display the categories here -->
-        <input type="text" name="categories[]" id="categories<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
-        <input type="hidden" name="categoriesValue[]" id="categorieValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
-      </td>
-      <td style="padding-left:20px;">
-        <div class="form-group">
-          <!-- Display the available categories_id here -->
-          <p id="available_categories<?php echo $x; ?>"></p>
-        </div>
-      </td>
+							<input type="text" name="categories[]" id="categories<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
+							<input type="hidden" name="categoriesValue[]" id="categorieValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+							<td style="padding-left:20px;">
+								<div class="form-group">
+								<!-- Display the available categories_id here -->
+								<p id="available_categories<?php echo $x; ?>"></p>
+								</div>
+							</td>
 	  
 							<td style="padding-left:20px;">
 			  					<div class="form-group">

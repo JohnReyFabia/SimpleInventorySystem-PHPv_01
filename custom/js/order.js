@@ -457,14 +457,14 @@ function getProductData(rowId) {
           // Display the categories and categories_id
           $("#categories" + rowId).val(response.categories);
           $("#categorieValue" + rowId).val(response.categoriesId);
-          $("#available_categories" + rowId).text(response.categories);
+          $("#available_categories" + rowId).text(response.categories_name);
 
           $("#quantity" + rowId).val(1);
           $("#available_quantity" + rowId).text(response.quantity);
 
 
           var quantityValue = parseInt($("#quantity" + rowId).val());
-          var total = brandValue * quantityValue;
+          var total = quantityValue - 1;
 
           // Format the total to two decimal places
           total = total.toFixed(2);
@@ -488,6 +488,7 @@ function getProductData(rowId) {
 // table total
 function getTotal(row = null) {
 	if(row) {
+		console.log(`getTotal called for row ${row}`);
 		var total = Number($("#brand"+row).val()) * Number($("#quantity"+row).val());
 		total = total.toFixed(2);
 		$("#total"+row).val(total);
