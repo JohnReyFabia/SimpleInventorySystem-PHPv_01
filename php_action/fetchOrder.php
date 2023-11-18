@@ -34,8 +34,12 @@ if ($result->num_rows > 0) {
 		// echo json_encode($row); die();
 
 		$countOrderItemSql = "SELECT count(*) FROM order_item WHERE order_id = $orderId";
+		$countUnreturnedOrderItemSql = "SELECT COUNT(*) FROM order_item WHERE order_id = $orderId AND isReturned = 0";
 		$itemCountResult = $connect->query($countOrderItemSql);
+		$itemcountUnreturnedOrderItemResult = $connect->query($countUnreturnedOrderItemSql);
 		$itemCountRow = $itemCountResult->fetch_row();
+		$itemCountUnreturnedOrderItemRow = $itemcountUnreturnedOrderItemResult->fetch_row();
+
 
 		// active 
 		if ($row["active"] == 1) {
@@ -53,7 +57,7 @@ if ($result->num_rows > 0) {
 	  </button>
 	  <ul class="dropdown-menu">
 	    <li><a href="orders.php?o=editOrd&i=' . $orderId . '" id="editOrderModalBtn"> <i class="glyphicon glyphicon-edit"></i> Edit</a></li>
-	    
+		<li><a href="orders.php?o=returnOrd&i=' . $orderId . '" id="returnOrderModalBtn"> <i class="glyphicon glyphicon-edit"></i> Return</a></li>
 	    <li><a type="button" onclick="printOrder(' . $orderId . ')"> <i class="glyphicon glyphicon-print"></i> Print </a></li>
 	    
 	     </ul>
@@ -67,11 +71,12 @@ if ($result->num_rows > 0) {
 			// client name
 			$row[2],
 			// client contact
-			$row[3],
+			$row["student_Number"],
 			$itemCountRow,
-			$paymentStatus,
+			($itemCountUnreturnedOrderItemRow[0] > 0) ? "<label class='label label-warning'>Pending</label>" : "<label class='label label-success'>Available</label>",
 			// button
 			$button
+			
 		);
 		$x++;
 	} // /while 

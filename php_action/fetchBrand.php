@@ -37,7 +37,10 @@ if($result->num_rows > 0) {
  	$output['data'][] = array( 		
  		$row[1], 		
  		$activeBrands,
- 		$button
+ 		$button,
+		$row[0], 
+		$row[2],
+		$row[3],
  		); 	
  } // /while 
 

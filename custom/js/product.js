@@ -255,7 +255,7 @@ $(document).ready(function() {
 							// status
 							$("#editProductStatus").val(response.active);
 							// remarks
-							$("#editRemarks").val(response.active);
+							$("#editRemarks").val(response.remarks);
 			
 							// update the product data function
 							$("#editProductForm").unbind('submit').bind('submit', function() {

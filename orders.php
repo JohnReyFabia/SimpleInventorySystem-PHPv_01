@@ -9,6 +9,8 @@ if($_GET['o'] == 'add') {
 	echo "<div class='div-request div-hide'>manord</div>";
 } else if($_GET['o'] == 'editOrd') { 
 	echo "<div class='div-request div-hide'>editOrd</div>";
+} else if($_GET['o'] == 'returnOrd') { 
+	echo "<div class='div-request div-hide'>returnOrd</div>";
 } // /else manage order
 
 
@@ -16,7 +18,9 @@ if($_GET['o'] == 'add') {
 
 <ol class="breadcrumb">
   <li><a href="dashboard.php">Home</a></li>
-  <li>Request</li>
+  <li>
+   <?php echo ($_GET['o'] == 'returnOrd') ? "Return" : "Request"; ?>
+  </li> 
   <li class="active">
   	<?php if($_GET['o'] == 'add') { ?>
   		Add Request
@@ -35,6 +39,8 @@ if($_GET['o'] == 'add') {
 		echo "Manage Request";
 	} else if($_GET['o'] == 'editOrd') { 
 		echo "Edit Request";
+	}else if($_GET['o'] == 'returnOrd') { 
+		echo "Return";
 	}
 	?>	
 </h4>
@@ -80,12 +86,30 @@ if($_GET['o'] == 'add') {
 			      <input type="text" class="form-control" id="studentNumber" name="studentNumber" placeholder="Students Number" autocomplete="off" required />
 			    </div>
 			  </div> <!--/form-group-->			  
+			  <div class="form-group">
+			    <label for="college" class="col-sm-2 control-label">College</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="college" name="college" placeholder="college" autocomplete="off" required />
+			    </div>
+			  </div> <!--/form-group-->			  
+			  <div class="form-group">
+			    <label for="course" class="col-sm-2 control-label">Course</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="course" name="course" placeholder="course" autocomplete="off" required />
+			    </div>
+			  </div> <!--/form-group-->			  
+			  <div class="form-group">
+			    <label for="yearLevel" class="col-sm-2 control-label">Year Level</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="yearLevel" name="yearLevel" placeholder="Year Level" autocomplete="off" required />
+			    </div>
+			  </div> <!--/form-group-->			  
 
 			  <table class="table" id="productTable">
 			  	<thead>
 			  		<tr>			  			
 			  			<th style="width:40%;">Product</th>
-			  			<th style="width:20%;">Category</th>
+			  			<th style="width:20%;">Size</th>
 			  			<th style="width:10%;">Available Quantity</th>
 			  			<th style="width:15%;">Quantity <br><small>(Enter to update)</small></th>			  			
 			  			<th style="width:25%;">Total items left</th>			  			
@@ -119,8 +143,19 @@ if($_GET['o'] == 'add') {
       </td>
       <td style="padding-left:20px;">
         <div class="form-group">
-          <!-- Display the available categories_id here -->
-          <p id="available_categories<?php echo $x; ?>"></p>
+		<div class="col-sm-8">
+				      <select class="form-control" id="size" name="size[]" required>
+				      	<option value="">~~SELECT~~</option>
+				      	<?php 
+				      	$sql = "SELECT brand_id, brand_name, brand_active, brand_status FROM brands WHERE brand_status = 1 AND brand_active = 1";
+								$result = $connect->query($sql);
+
+								while($row = $result->fetch_array()) {
+									echo "<option value='".$row[0]."'>".$row[1]."</option>";
+								} // while
+								
+				      	?>
+				      </select>
         <input type="hidden" name="categoryId[]" id="categoryId<?php echo $x; ?>" autocomplete="off" class="form-control" />
         </div>
       </td>
@@ -134,7 +169,7 @@ if($_GET['o'] == 'add') {
 			  				</td>
 			  				<td style="padding-left:20px;">
 			  					<div class="form-group">
-			  					<input type="number" name="quantity[]" id="quantity<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x ?>)" autocomplete="off" class="form-control" min="1" />
+			  					<input type="number" name="quantity[]" id="quantity<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x ?>)" autocomplete="off" class="form-control quantity-input" min="1" />
 			  					</div>
 			  				</td>
 			  				<td style="padding-left:20px;">			  					
@@ -332,17 +367,71 @@ if($_GET['o'] == 'add') {
 			  		?>
 			  	</tbody>			  	
 			  </table>
-
-
-				
-				
 			 </div> 
-				
-				
 
 
 			<?php
-		} // /get order else  ?>
+			
+		} else if($_GET['o'] == 'returnOrd') {
+		?>
+
+<div class="success-messages"></div> <!--/success-messages-->
+
+
+	<?php $orderId = $_GET['i'];
+
+	$sql = "SELECT orders.order_id, orders.order_date, orders.client_name, orders.student_Number,  orders.payment_status FROM orders 	
+		  WHERE orders.order_id = {$orderId}";
+
+	  $result = $connect->query($sql);
+	  $data = $result->fetch_row();
+	?>
+
+	Client Name: <?php echo $data[2]; ?>
+
+	<form action="php_action/returnOrder.php" method="POST">
+		<input type="hidden" name="orderId" value="<?php echo $orderId; ?>" />
+		
+		<?php
+			$orderItemSql = "SELECT 
+								order_item.order_item_id, 
+								order_item.order_id, 
+								order_item.product_id, 
+								order_item.quantity, 
+								order_item.brand, 
+								order_item.total,
+								product.product_name
+							FROM 
+								order_item
+							LEFT JOIN 
+								product ON order_item.product_id = product.product_id
+							WHERE 
+								order_item.order_id = {$orderId} AND order_item.isReturned = 0";
+
+			$orderItemResult = $connect->query($orderItemSql);
+			
+			while ($orderItemData = $orderItemResult->fetch_array()) {
+				?>
+				<div>
+					<label>
+					<?php echo $orderItemData['product_name']; ?>
+					</label>
+					<input type="checkbox" name="selected_items[]" value="<?php echo $orderItemData['order_item_id']; ?>">
+				</div>
+				<?php
+			} // /while
+			?>
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+
+	
+   </div> 
+
+		<?php
+		}
+			// get order
+		?>
 
 
 	</div> 	

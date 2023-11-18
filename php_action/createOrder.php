@@ -2,21 +2,40 @@
 require_once 'db_connect.php';
 
 if ($_POST) {
+	// Get order data from the form
+	$clientName = $_POST['clientName'];
 
-	
+	// Check if the client has an order item that is not returned
+	$sql = "SELECT oi.order_id FROM order_item oi
+			LEFT JOIN orders o ON oi.order_id = o.order_id
+			WHERE o.client_name = '$clientName' AND oi.isReturned = 0";
+
+	$result = $connect->query($sql);
+
+	if ($result->num_rows > 0) {
+		echo '<script>alert("Still have unreturned items");window.location.href = "../orders.php?o=add";</script>';
+		return;
+	} 
+
+
 
     // Get order data from the form
     $orderDate = $_POST['orderDate'];
     $clientName = $_POST['clientName'];
     $studentNumber = $_POST['studentNumber'];
+    $college = $_POST['college'];
+    $course = $_POST['course'];
+    $year_level = $_POST['yearLevel'];
+
     $productName = $_POST['productName'];
-    $categoryId = $_POST['categoryId'];
+    $size = $_POST['size'];
+	$categoryId = $_POST['categoryId'];
     $quantity = $_POST['quantity'];
     $total = $_POST['totalValue'];
 
 	
     // Insert the order data into the orders table
-    $sql = "INSERT INTO orders (order_date, client_name, student_Number, order_status) VALUES ('$orderDate', '$clientName', '$studentNumber', 1)";
+    $sql = "INSERT INTO orders (order_date, client_name, student_Number, order_status, course, college, year_level) VALUES ('$orderDate', '$clientName', '$studentNumber', 1, '$course', '$college', '$year_level')";
 	$orderId; 
 
 	if ($connect->query($sql) === TRUE) {
@@ -35,9 +54,10 @@ if ($_POST) {
 		$category = $categoryId[$i];
 		$quantityItem = $quantity[$i];
 		$totalItem = $total[$i];
+		$currentSize = $size[$i];
 
-		$orderItemSql = "INSERT INTO order_item ( order_id, product_id, categoryId, quantity, total) 
-						 VALUES ( '$orderId', '$product', '$category', '$quantityItem', '$totalItem')";
+		$orderItemSql = "INSERT INTO order_item ( order_id, product_id, brand, quantity, total) 
+						 VALUES ( '$orderId', '$product', '$currentSize', '$quantityItem', '$totalItem')";
 
 		$connect->query($orderItemSql);
 	}

@@ -28,6 +28,7 @@
 							<th>Location</th>							
 							<th>Equipment Name</th>					
 							<th>Quantity</th>
+							<th>Available Quantity</th>
 							<th>Size</th>
 							<th>Serial Number</th>
 							<th>Property Number</th>

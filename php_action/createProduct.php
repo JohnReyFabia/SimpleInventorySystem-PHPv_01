@@ -17,6 +17,18 @@ if($_POST) {
   $propertyNumber 		= $_POST['propertyNumber'];
   $remarks 				= $_POST['remarks'];
 
+
+	$sql = "SELECT * FROM product WHERE product_name = '$description'";
+		
+	// Execute the query
+	$result = $connect->query($sql);
+
+	// Return true if the value exists, false otherwise
+	if($result->num_rows > 0) {
+		echo '<script>alert("Product already existed");window.location.href = "../product.php";</script>';
+		return;
+	}
+
 	$type = explode('.', $_FILES['productImage']['name']);
 	$type = $type[count($type)-1];		
 	$url = '../assests/images/stock/'.uniqid(rand()).'.'.$type;

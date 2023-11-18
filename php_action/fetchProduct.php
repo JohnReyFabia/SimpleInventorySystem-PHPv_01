@@ -7,12 +7,28 @@ require_once 'core.php';
 $sql = "SELECT product.product_id, product.product_name, product.product_image, product.brand_id,
         product.categories_id, product.location_id, product.quantity, product.SerialNumber,
         product.PropertyNumber, product.active, product.status,product.remarks, brands.brand_name,
-        categories.categories_name, locations.location_name
+        categories.categories_name, locations.location_name, SUM(order_item.quantity) AS total_ordered_quantity
         FROM product 
         INNER JOIN brands ON product.brand_id = brands.brand_id 
         INNER JOIN categories ON product.categories_id = categories.categories_id
         INNER JOIN locations ON product.location_id = locations.location_id  
-        WHERE product.status = 1 AND product.quantity > 0";
+        LEFT JOIN order_item ON product.product_id = order_item.product_id
+        WHERE product.status = 1 AND product.quantity > 0
+        GROUP BY 
+            product.product_id, 
+            product.product_name, 
+            product.product_image, 
+            product.brand_id,
+            product.categories_id, 
+            product.location_id, 
+            product.SerialNumber,
+            product.PropertyNumber, 
+            product.active,
+            product.status,
+            product.remarks, 
+            brands.brand_name, 
+            categories.categories_name, 
+            locations.location_name;";
 
 $result = $connect->query($sql);
 
@@ -55,6 +71,8 @@ if ($result->num_rows > 0) {
             $row[1],
             // quantity
             $row[6] . " pcs",
+            // available
+            $row[6] - $row[15] . " pcs",
             // size
             $brand,
             // serial number
@@ -64,7 +82,7 @@ if ($result->num_rows > 0) {
             // category
             $category,
             // active
-            $active,
+            ($row[6] > $row[15]) ? "Available" : "Unavailable",
             // active
             $row[11],
             // button

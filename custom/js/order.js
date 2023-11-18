@@ -1,6 +1,17 @@
 var manageOrderTable;
 
 $(document).ready(function() {
+
+	// $('.quantity-input').on('change', function () {
+	// 	// Get the entered value
+	// 	var enteredValue = parseInt($(this).val(), 10);
+
+	// 	// Check if the entered value is greater than 10
+	// 	if (!isNaN(enteredValue) && enteredValue > 10) {
+	// 		alert('Quantity should not exceed 10.');
+	// 	}
+	// });
+
 	$("#paymentPlace").change(function(){
 		if($("#paymentPlace").val() == 2)
 		{
@@ -368,15 +379,28 @@ function addRow() {
 		count = 1;
 		arrayNumber = 0;
 	}
-
 	$.ajax({
 		url: 'php_action/fetchProductData.php',
 		type: 'post',
 		dataType: 'json',
 		success:function(response) {
-			$("#addRowBtn").button("reset");			
 
-			var tr = '<tr id="row'+count+'" class="'+arrayNumber+'">'+			  				
+			$.ajax({
+				url: 'php_action/fetchBrand.php',
+				type: 'post',
+				dataType: 'json',
+				success: function (responsein) {
+
+
+					let options = responsein.data.map(function(item){
+						return `<option value='${item[3]}'>${item[0]}</option>`
+					})
+
+
+					let brand = `<select class="form-control" id="size" name="size[]" required>
+					<option value="">~~SELECT~~</option>${options}</select>`
+			
+					var tr = '<tr id="row'+count+'" class="'+arrayNumber+'">'+			  				
 				'<td>'+
 					'<div class="form-group">'+
 
@@ -393,8 +417,10 @@ function addRow() {
 
 				'<td style="padding-left:20px;">'+
 					'<div class="form-group">'+
-					'<p id="available_categories'+count+'"></p>'+
+					'<div class="col-sm-8">'+
+					brand +
 					' <input type="hidden" name="categoryId[]" id="categoryId'+count+'" autocomplete="off" class="form-control" />' +
+					'</div>'+
 					'</div>'+
 				'</td>'+
 				
@@ -423,7 +449,14 @@ function addRow() {
 				$("#productTable tbody tr:last").after(tr);
 			} else {				
 				$("#productTable tbody").append(tr);
-			}		
+			}	
+				},
+				error: function (xhr, status, error) {
+					console.error('Error fetching brands:', error);
+				}
+			});
+
+			$("#addRowBtn").button("reset");				
 
 		} // /success
 	});	// get the product data
@@ -498,9 +531,16 @@ function getProductData(rowId) {
 
 
 // table total
-function getTotal(row = null) {
+function getTotal(row = null, e) {
 	if(row) {
-		var total = Number($("#available_quantityValue"+row).val()) - Number($("#quantity"+row).val());
+		const currentQuantity = Number($("#quantity"+row).val());
+		const availableQuantity = Number($("#available_quantityValue"+row).val());
+		var total =  availableQuantity - currentQuantity;
+		if(currentQuantity > availableQuantity) {
+			$("#quantity"+row).val(availableQuantity)
+			total =  availableQuantity;
+		}
+		
 		total = total.toFixed(2);
 		$("#total"+row).val(total);
 		$("#totalValue"+row).val(total);
