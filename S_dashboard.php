@@ -1,5 +1,5 @@
 <?php require_once 'php_action/db_connect.php' ?>
-<?php require_once 'includes/S_header.php'; ?>
+<?php require_once 'includes/S_header.php' ?>
 
 <div class="row">
 	<div class="col-md-12">
