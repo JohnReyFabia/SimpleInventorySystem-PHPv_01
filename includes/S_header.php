@@ -60,19 +60,17 @@
         <?php if(isset($_SESSION['userId']) && $_SESSION['userId']==1)  ?>
 
         <li id="navDashboard"><a href="borrowed_cart.php"><i class="glyphicon glyphicon-shopping-cart"></i> Borrowed Cart</a></li>        
-        <?php if(isset($_SESSION['userId']) && $_SESSION['userId']==1)  ?>
-				
-		<?php  if(isset($_SESSION['userId']) && $_SESSION['userId']==1) { ?>
+        
         <li id="navReport"><a href="S_history.php"> <i class="glyphicon glyphicon-check"></i> History </a></li>
-		<?php } ?> 
+
     
     
         <li class="dropdown" id="navSetting">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-user"></i> <span class="caret"></span></a>
           <ul class="dropdown-menu">    
-			<?php if(isset($_SESSION['userId']) && $_SESSION['userId']==1) { ?>
+			
             <li id="topNavUser"><a href="edit_profile.php"> <i class="glyphicon glyphicon-wrench"></i> Edit Profile</a></li>
-<?php } ?>              
+             
             <li id="topNavLogout"><a href="logout.php"> <i class="glyphicon glyphicon-log-out"></i> Logout</a></li>            
           </ul>
         </li>        

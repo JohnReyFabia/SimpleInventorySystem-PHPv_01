@@ -39,7 +39,14 @@ if($_POST) {
 				// set session
 				$_SESSION['userId'] = $user_id;
 
-				header('location:'.$store_url.'dashboard.php');	
+				// Check if it's the first row in the 'users' table
+				$isFirstRow = $value['user_id'] == 1; // Change '1' to the actual user_id of the first row
+
+				if ($isFirstRow) {
+					header('location:'.$store_url.'dashboard.php');
+				} else {
+					header('location:'.$store_url.'S_dashboard.php');
+				}
 			} else{
 				
 				$errors[] = "Incorrect username/password combination";
@@ -114,7 +121,8 @@ if($_POST) {
 									<div class="col-sm-offset-2 col-sm-10">
 									  <button type="submit" class="btn btn-success"> <i class="glyphicon glyphicon-log-in"></i> Log In</button>
 									</div>
-								</div>
+									<a href = "signup.php">Do not have an account?</a>					
+</div>
 							</fieldset>
 						</form>
 					</div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2023 at 10:22 AM
+-- Generation Time: Nov 28, 2023 at 11:32 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -248,6 +248,30 @@ INSERT INTO `product` (`product_id`, `product_name`, `product_image`, `brand_id`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `stuser`
+--
+
+CREATE TABLE `stuser` (
+  `firstname` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `emailadd` varchar(255) NOT NULL,
+  `college` varchar(255) NOT NULL,
+  `yearlevel` varchar(255) NOT NULL,
+  `program` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stuser`
+--
+
+INSERT INTO `stuser` (`firstname`, `lastname`, `emailadd`, `college`, `yearlevel`, `program`, `password`) VALUES
+('1', '', '1', '1', '1', '11', '1'),
+('2', '2', '2', '2', '2', '2', '2');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -263,7 +287,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`) VALUES
-(1, 'admin', 'd00f5d5217896fb7fd601412cb890830', ''),
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', ''),
 (2, 'staff', '5f4dcc3b5aa765d61d8327deb882cf99', 'staff@stockmg.com');
 
 --
