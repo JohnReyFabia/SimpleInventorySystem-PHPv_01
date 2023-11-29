@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2023 at 10:22 AM
+-- Generation Time: Nov 29, 2023 at 02:41 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -129,32 +129,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `order_date`, `client_name`, `payment_status`, `order_status`, `user_id`, `student_number`, `college`, `course`, `year_level`) VALUES
-(1, '2021-06-02', 'James Rusell', 1, 2, 1, '123123123', '', '', ''),
-(2, '2021-06-02', 'Thomas', 1, 1, 1, '123123', '', '', ''),
-(3, '2021-06-02', 'Colin', 2, 1, 1, '123123', '', '', ''),
-(4, '2022-01-18', 'Jack', 1, 1, 1, '', '', '', ''),
-(5, '2022-01-26', 'Thomas Stuart', 1, 1, 1, '', '', '', ''),
-(6, '2022-01-31', 'James Greenwood', 1, 1, 1, '', '', '', ''),
-(7, '2022-01-31', 'Annie Gillespie', 1, 1, 2, '', '', '', ''),
-(8, '2022-01-30', 'Kristen Stiger', 1, 1, 2, '', '', '', ''),
-(9, '2022-02-02', 'Jamie ', 1, 1, 1, '', '', '', ''),
-(10, '2022-02-02', 'William Moore', 1, 1, 1, '', '', '', ''),
-(11, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', ''),
-(12, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', ''),
-(13, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', ''),
-(14, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', '1'),
-(15, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', '1'),
-(16, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', '1'),
-(17, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', '1'),
-(18, '0000-00-00', '2', 0, 1, 0, '2', '2', '2', '2'),
-(19, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', '1'),
-(20, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', '1'),
-(21, '0000-00-00', '1', 0, 1, 0, '1', '1', '1', '1'),
-(22, '0000-00-00', '12', 0, 1, 0, '12', '21', '2', '21'),
-(23, '0000-00-00', 'curr', 0, 1, 0, 'curr', 'curr', 'curr', 'curr'),
-(24, '0000-00-00', 'James Rusell', 0, 1, 0, '213', '213', '213', '123'),
-(25, '0000-00-00', 'Thomas', 0, 1, 0, 'asd', 'asd', 'asd', 'asd'),
-(26, '0000-00-00', 'Thomas', 0, 1, 0, 'asd', 'asd', 'asd', 'asd');
+(1, '0000-00-00', 'John', 0, 1, 0, '2018-7-a234', 'College of Science', 'Computer Science', '1');
 
 -- --------------------------------------------------------
 
@@ -201,7 +176,9 @@ INSERT INTO `order_item` (`order_item_id`, `order_id`, `product_id`, `quantity`,
 (23, 23, 10, '1', 4, '', 0, 0),
 (24, 24, 10, '2', 5, '45.00', 0, 1),
 (25, 25, 12, '32', 5, '0.00', 0, 1),
-(26, 26, 11, '30', 5, '30.00', 0, 0);
+(26, 26, 11, '30', 5, '30.00', 0, 0),
+(27, 1, 4, '1', 4, '', 0, 1),
+(28, 1, 8, '3', 6, '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -263,7 +240,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`) VALUES
-(1, 'admin', 'd00f5d5217896fb7fd601412cb890830', ''),
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', ''),
 (2, 'staff', '5f4dcc3b5aa765d61d8327deb882cf99', 'staff@stockmg.com');
 
 --
@@ -340,13 +317,13 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `product`
