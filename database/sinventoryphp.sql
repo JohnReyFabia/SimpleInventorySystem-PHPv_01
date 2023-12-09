@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2023 at 02:41 AM
+-- Generation Time: Dec 09, 2023 at 06:27 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `sinventoryphp`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `borrow_history`
+--
+
+CREATE TABLE `borrow_history` (
+  `borrow_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `quantity_borrowed` int(11) NOT NULL,
+  `borrow_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `return_date` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `borrow_history`
+--
+
+INSERT INTO `borrow_history` (`borrow_id`, `product_id`, `order_id`, `quantity_borrowed`, `borrow_date`, `return_date`) VALUES
+(1, 11, 2, 1, '2023-11-29 02:25:45', '2023-11-29 02:25:45'),
+(2, 13, 3, 2, '2023-11-29 02:27:09', '2023-11-29 02:27:09'),
+(3, 6, 4, 21, '2023-11-30 06:41:06', '2023-11-30 06:41:06');
 
 -- --------------------------------------------------------
 
@@ -129,7 +153,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `order_date`, `client_name`, `payment_status`, `order_status`, `user_id`, `student_number`, `college`, `course`, `year_level`) VALUES
-(1, '0000-00-00', 'John', 0, 1, 0, '2018-7-a234', 'College of Science', 'Computer Science', '1');
+(1, '0000-00-00', 'John', 0, 1, 0, '2018-7-a234', 'College of Science', 'Computer Science', '1'),
+(2, '0000-00-00', '2', 0, 1, 0, 'r', 'r', 'r', 'r'),
+(3, '0000-00-00', '22', 0, 1, 0, '22', '22', '22', '22'),
+(4, '0000-00-00', 'Ailene', 0, 1, 0, '32324kjb', 'COLLEGE college ceat ', 'it', 'first year 1st year');
 
 -- --------------------------------------------------------
 
@@ -158,7 +185,7 @@ INSERT INTO `order_item` (`order_item_id`, `order_id`, `product_id`, `quantity`,
 (4, 0, 16, '12', 22, '264.00', 1, 0),
 (5, 0, 16, '13', 22, '264.00', 1, 0),
 (6, 0, 16, '12', 22, '286.00', 1, 0),
-(7, 4, 16, '12', 22, '264.00', 1, 0),
+(7, 4, 16, '12', 22, '264.00', 1, 1),
 (8, 5, 3, '2', 53, '106.00', 1, 1),
 (9, 6, 3, '14', 53, '742.00', 1, 1),
 (11, 8, 9, '4', 87, '348.00', 1, 1),
@@ -178,7 +205,10 @@ INSERT INTO `order_item` (`order_item_id`, `order_id`, `product_id`, `quantity`,
 (25, 25, 12, '32', 5, '0.00', 0, 1),
 (26, 26, 11, '30', 5, '30.00', 0, 0),
 (27, 1, 4, '1', 4, '', 0, 1),
-(28, 1, 8, '3', 6, '', 0, 0);
+(28, 1, 8, '3', 6, '', 0, 1),
+(29, 2, 11, '1', 3, '', 0, 1),
+(30, 3, 13, '2', 3, '', 0, 1),
+(31, 4, 6, '21', 3, '21.00', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -248,6 +278,12 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `email`) VALUES
 --
 
 --
+-- Indexes for table `borrow_history`
+--
+ALTER TABLE `borrow_history`
+  ADD PRIMARY KEY (`borrow_id`);
+
+--
 -- Indexes for table `brands`
 --
 ALTER TABLE `brands`
@@ -296,6 +332,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `borrow_history`
+--
+ALTER TABLE `borrow_history`
+  MODIFY `borrow_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
@@ -317,13 +359,13 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `product`

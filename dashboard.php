@@ -41,7 +41,7 @@ $connect->close();
 			<div class="panel-heading">
 				
 				<a href="product.php" style="text-decoration:none;color:black;">
-					Total Product
+					Total Number of Equipment
 					<span class="badge pull pull-right"><?php echo $countProduct; ?></span>	
 				</a>
 				
@@ -67,7 +67,7 @@ $connect->close();
 			<div class="panel panel-info">
 			<div class="panel-heading">
 				<a href="orders.php?o=manord" style="text-decoration:none;color:black;">
-					Total Orders
+					Number of Borrowed Equipment
 					<span class="badge pull pull-right"><?php echo $countOrder; ?></span>
 				</a>
 					

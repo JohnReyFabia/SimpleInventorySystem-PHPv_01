@@ -30,45 +30,47 @@
 <body>
 
 <div class="row">
-	<div class="col-md-12">
-	
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<div class="page-heading"> <i class="glyphicon glyphicon-edit"></i> List of Equipment</div>
-			</div> <!-- /panel-heading -->
-			<div class="panel-body">
+    <div class="col-md-12">
 
-				<div class="remove-messages"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="page-heading"> <i class="glyphicon glyphicon-edit"></i> List of Equipment</div>
+            </div> <!-- /panel-heading -->
+            <div class="panel-body">
 
-				<div class="div-action pull pull-right" style="padding-bottom:20px;">
-				
-				<?php	
-		
-				// Fetch inventory data from the database
-				$sql = "SELECT product_id, product_name, product_image FROM product WHERE status = 1";
-				$result = $connect->query($sql);
-			
-// Display the inventory in a grid
-echo '<div class="item-container">';
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo '<div class="item">';
-		echo '<img src= assests\images\stock\ '. $row['product_image'] . '" alt="' . $row['product_name'] . '" style="max-width: 100%;">';
-        echo '<p>' . $row['product_name'] . '</p>';
+                <div class="remove-messages"></div>
 
-        echo '<button onclick="borrowItem(' . $row['product_id'] . ')"> Add to Borrowed Cart</button>';
-        echo '</div>';
-    }
-}  
+                <div class="div-action pull pull-right" style="padding-bottom:20px;">
 
-?>
+                <?php
 
+                // Fetch inventory data from the database
+                $sql = "SELECT product_id, product_name, product_image FROM product WHERE status = 1";
+                $result = $connect->query($sql);
 
-    
-				</div> <!-- /div-action -->				
-				
+                // Display the inventory in a grid
+                echo '<div class="item-container">';
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo '<div class="item">';
+                        // Determine the image type based on the file extension
+                        $imagePath =  $row['product_image'];
+                        $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
+                        echo '<img src="' . $imagePath . '" alt="' . $row['product_name'] . '" style="max-width: 100%;" />';
+                        echo '<p>' . $row['product_name'] . '</p>';
 
-			</div> <!-- /panel-body -->
-		</div> <!-- /panel -->		
-	</div> <!-- /col-md-12 -->
+                        echo '<button onclick="borrowItem(' . $row['product_id'] . ')"> Add to Borrowed Cart</button>';
+                        echo '</div>';
+                    }
+                }
+
+                ?>
+                </div> <!-- /div-action -->
+
+            </div> <!-- /panel-body -->
+        </div> <!-- /panel -->
+    </div> <!-- /col-md-12 -->
 </div> <!-- /row -->
+
+</body>
+</html>
