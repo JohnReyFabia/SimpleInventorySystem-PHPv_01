@@ -1,5 +1,5 @@
 <?php
-require_once 'core.php';
+require_once 'db_connect.php';
 
 if($_POST) {
     // Retrieve form data
@@ -11,39 +11,43 @@ if($_POST) {
     $program = $_POST["program"];
     $yearlevel = $_POST["yearlevel"];
 
-	$sql = "SELECT * FROM stuser WHERE emailadd = '$emailadd'";
+	// Validate the data (you can add more robust validation)
+	if (empty($firstname) || empty($lastname) || empty($emailadd) || empty($password) || empty($college) || empty($program) || empty($yearlevel)) {
+		die("Please fill in all fields.");
+	}
+
+	$sql = "SELECT * FROM users WHERE username = '$emailadd'";
 		
 	// Execute the query
 	$result = $connect->query($sql);
 
-	// Return true if the value exists, false otherwise
 	if($result->num_rows > 0) {
 		echo '<script>alert("Email Address already existed");window.location.href = "../signup.php";</script>';
 		return;
 	}
-	$sql = "INSERT INTO stuser (firstname, lastname, emailadd, password, college, program, yearlevel) 
-				VALUES ('$firstname', '$lastname', '$emailadd', '$password', $college, '$program', '$yearlevel')";
-
-				if($connect->query($sql) === TRUE) {
-					$valid['success'] = true;
-					$valid['messages'] = "Successfully Created";	
-				} else {
-					$valid['success'] = false;
-					$valid['messages'] = "Error while adding the members";
-				}
-				
-				
-				// Validate the data (you can add more robust validation)
-				  if (empty($firstname) || empty($lastname) || empty($emailadd) || empty($password) || empty($college) || empty($program) || empty($yearlevel)) {
-					die("Please fill in all fields.");
-				}
-
-    // Hash the password before storing it (improve security)
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
 	
+	$hashedPassword = md5($password);
+		// Insert into users table without sanitization (vulnerable to SQL injection)
+		$sql = "INSERT INTO users (username, password, email, role) 
+				VALUES ('$emailadd', '$hashedPassword', '$emailadd', 'user')";
+		if ($connect->query($sql) === FALSE) {
+			echo "Error: " . $connect->error;
+		}
+
+		// Get the last inserted user ID
+		$user_id = $connect->insert_id;
+
+		// Insert into s_users table without sanitization (vulnerable to SQL injection)
+		$sql = "INSERT INTO s_users (user_id, fname, lname, college, program, year_level) 
+				VALUES ('$user_id', '$firstname', '$lastname', '$college', '$program', '$yearlevel')";
+
+		if ($connect->query($sql) === FALSE) {
+			echo "Error: " . $connect->error;
+			return;
+		}
+
+	echo '<script>alert("' . $valid['messages'] . '"); window.location.href = "../signup.php";</script>';
 } $connect->close();
 
-echo '<script>alert("' . $valid['messages'] . '"); window.location.href = "../signup.php";</script>';
 
 ?>

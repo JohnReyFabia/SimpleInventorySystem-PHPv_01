@@ -55,7 +55,6 @@
                         echo '<div class="item">';
                         // Determine the image type based on the file extension
                         $imagePath =  $row['product_image'];
-                        $imageType = pathinfo($imagePath, PATHINFO_EXTENSION);
                         echo '<img src="' . $imagePath . '" alt="' . $row['product_name'] . '" style="max-width: 100%;" />';
                         echo '<p>' . $row['product_name'] . '</p>';
 
@@ -74,3 +73,41 @@
 
 </body>
 </html>
+
+
+<script>
+    function borrowItem(productId, currentQuantity = 10){
+        const quantity = prompt("Enter Quantity");
+
+        if(quantity > currentQuantity) {
+            alert("Error quantity is greater than in stock")
+        }
+
+
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const index = cart.findIndex(item => item.product_id === productId)
+        console.log(index)
+        if(index > -1) {
+            const updatedCart = cart.map((item, i) => {
+                if(i === index) {
+                    return {
+                        ...item,
+                        quantity: Number(item.quantity) + Number(quantity)
+                     }
+                }
+            return item
+            })
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        }else {
+            console.log("asd")
+            cart.push({
+                product_id: productId,
+                quantity: Number(quantity)
+            })
+            console.log(cart)
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+    }
+</script>

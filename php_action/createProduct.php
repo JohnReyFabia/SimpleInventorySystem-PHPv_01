@@ -31,13 +31,17 @@ if($_POST) {
 
 	$type = explode('.', $_FILES['productImage']['name']);
 	$type = $type[count($type)-1];		
-	$url = '../assests/images/stock/'.uniqid(rand()).'.'.$type;
+	$urlDB = 'assests/images/stock/'.uniqid(rand()).'.'.$type;
+	$url = '../' . $urlDB;
+
+
+	
 	if(in_array($type, array('gif', 'jpg', 'jpeg', 'png', 'JPG', 'GIF', 'JPEG', 'PNG'))) {
 		if(is_uploaded_file($_FILES['productImage']['tmp_name'])) {			
 			if(move_uploaded_file($_FILES['productImage']['tmp_name'], $url)) {
 				
 				$sql = "INSERT INTO product (product_name, product_image, brand_id, categories_id, location_id, quantity, SerialNumber,PropertyNumber,  active, status, remarks) 
-				VALUES ('$description', '$url', '$sizeName', '$categoryName', $locationName, '$quantity', '$serialNumber','$propertyNumber', '$productStatus', 1, $remarks)";
+				VALUES ('$description', '$urlDB', '$sizeName', '$categoryName', $locationName, '$quantity', '$serialNumber','$propertyNumber', '$productStatus', 1, '$remarks')";
 
 				if($connect->query($sql) === TRUE) {
 					$valid['success'] = true;
