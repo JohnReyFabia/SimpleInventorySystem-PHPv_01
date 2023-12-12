@@ -89,20 +89,37 @@ if($_GET['o'] == 'add') {
 			  <div class="form-group">
 			    <label for="college" class="col-sm-2 control-label">College</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="college" name="college" placeholder="college" autocomplete="off" required />
+			    <select type="dropdown" class="form-control" id="college" name="college" placeholder="college" required onchange="onChangeCollege(this.value)">
+            <option disabled selected>Select College</option> 
+            <option>College of Arts and Humanities</option>
+             <option>College of Business and Accountancy</option>
+             <option>College of Engineering, Architecture and Technology</option>
+             <option>College of Nursing and Health Sciences </option>
+             <option>College of Hospitality Management and Tourism</option>
+             <option>College of Teacher Education</option>
+             <option>College of Sciences</option>
+             <option>College of Criminal Justice Education</option>
+    </select>
 			    </div>
-			  </div> <!--/form-group-->			  
+			  </div> <!--/form-group-->		
+			  	  
 			  <div class="form-group">
-			    <label for="course" class="col-sm-2 control-label">Course</label>
+			    <label for="course" class="col-sm-2 control-label">Program</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="course" name="course" placeholder="course" autocomplete="off" required />
+			      <select type="text" class="form-control" id="program" name="program" placeholder="program" autocomplete="off" required></select>
 			    </div>
 			  </div> <!--/form-group-->			  
 			  <div class="form-group">
 			    <label for="yearLevel" class="col-sm-2 control-label">Year Level</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="yearLevel" name="yearLevel" placeholder="Year Level" autocomplete="off" required />
-			    </div>
+			      <select type="text" class="form-control" id="yearLevel" name="yearLevel" placeholder="Year Level" autocomplete="off" required />
+				  <option value="1" >1st Year</option>
+             <option value="2">2nd Year</option>
+             <option value="3">3rd Year</option>
+             <option value="4">4th Year </option>
+             <option value="5">5th Year</option>
+		</select>
+				</div>
 			  </div> <!--/form-group-->			  
 
 			  <table class="table" id="productTable">
@@ -476,4 +493,59 @@ if($_GET['o'] == 'add') {
 <?php require_once 'includes/footer.php'; ?>
 
 
-	
+
+<script defer>
+
+function onChangeCollege(college) {
+    const programSelect = document.getElementById("program");
+
+    // Clear existing options
+    programSelect.innerHTML = '';
+
+    // Define programs based on the selected college
+    const programs = getProgramsForCollege(college);
+    console.log(programs)
+
+    // Add default option
+    const defaultOption = document.createElement("option");
+    defaultOption.text = 'Select a Program';
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    programSelect.add(defaultOption);
+
+    // Add program options
+    programs.forEach(program => {
+        const option = document.createElement("option");
+        option.text = program;
+        programSelect.add(option);
+    });
+}
+
+// Function to return programs based on the selected college
+function getProgramsForCollege(college) {
+    switch (college) {
+        case "College of Arts and Humanities":
+            return ["Bachelor of Science in Social Work", "Bachelor of Science in Psychology", "Bachelor of Science in Political Science", "Bachelor of Arts in Communication", "Bachelor of Arts in Philippine Study"];
+        case "College of Business and Accountancy":
+            return ["BS Accountancy/BSBA Mgt. Accounting", "BSBA - Human Resource Management", "BSBA - Business Economics", "BSBA - Financial Management", "BSBA - Marketing Management", "BS Entrep - Franchising and Trading", "BS Entrep - Agribusiness", "BS Entrep - Innovation and Technology", "Bachelor of Science in Public Administration"];
+        case "College of Engineering, Architecture and Technology":
+            return ["Bachelor of Science in Architecture", "Bachelor of Science in Civil Engineering", "Bachelor of Science in Electrical Engineering", "Bachelor of Science in Mechanical Engineering", "Bachelor of Science in Petroleum Engineering"];    
+        case "College of Nursing and Health Sciences":
+            return ["Bachelor of Science in Nursing", "Bachelor of Science in Midwifery", "Diploma in Midwifert"];
+        case "College of Hospitality Management and Tourism":
+            return ["Bachelor of Science in Hospitality Management - Cul Arts", "Bachelor of Science in Hospitality Management - Hotel Resort", "Bachelor of Scinece in Tourism Management"];
+        case "College of Teacher Education":
+            return ["Bachelor of Elementary Education", "Bachelor of Secondary Education - English", "Bachelor of Secondary Education - Filipino", "Bachelor of Secondary Education - Math", "Bachelor of Secondary Education - Science", "Bachelor of Secondary Education - Social Science", "Bachelor of Secondary Education - Values Education", "Bachelor of Physical Education"];
+        case "College of Sciences":
+            return ["Bachelor of Science in Biology", "Bachelor of Science in Marine Biology", "Bachelor of Scinece in Environmental Science", "Bachelor of Science in Information and Technology", "Bachelor of Science in Computer Science"];
+        case "College of Criminal Justice Education":
+            return ["Bachelor of Science in Criminology"];  
+        
+            // Add cases for other colleges as needed
+        default:
+            return [];
+    }
+}
+
+
+</script>

@@ -29,20 +29,17 @@ $orderItemResult = $connect->query($orderItemSql);
                <tbody>
                  
                   <tr>
-                     <td rowspan="8" colspan="2" style="border-left:1px solid black;" background-image="logo.png"><img src="./logo.png" alt="logo" width="110px;"></td>
+                     <td rowspan="8" colspan="2" style="border-left:1px solid black;" background-image="logo1.png"><img src="./logo1.png" alt="logo" width="110px;"></td>
                      <td colspan="3" >ORIGINAL</td>
                   </tr>
                   <tr>
-                     <td colspan="3" >DUPLICATE</td>
+                     <td colspan="3" style="font-style: italic;font-weight: 600;text-decoration: underline;font-size: 25px;">CS Laboratory Inventory System</td>
                   </tr>
                   <tr>
-                     <td colspan="3" style="font-style: italic;font-weight: 600;text-decoration: underline;font-size: 25px;">Simple Inventory System</td>
+                     <td colspan="3" >Palawan State University </td>
                   </tr>
                   <tr>
-                     <td colspan="3" >Nr. Your First Address,</td>
-                  </tr>
-                  <tr>
-                     <td colspan="3" >Cityname,Pincode</td>
+                     <td colspan="3" >Bgy. Tiniguiban, Puerto Princesa City</td>
                   </tr>
                   <tr>
                      <td colspan="3" >Tele: 1234567890,1478523690.</td>
@@ -50,9 +47,7 @@ $orderItemResult = $connect->query($orderItemSql);
                   <tr>
                      <td colspan="3" >Email: email0@email.co.in</td>
                   </tr>
-                  <tr>
-                     <td colspan="3" style="text-decoration: underline;">email0@email.co.in</td>
-                  </tr>
+   
                   <tr>
                      <td colspan="2" style="padding: 0px;vertical-align: top;border-right:1px solid black;">
                         <table align="left" cellpadding="0" cellspacing="0" style="border: thin solid black; width: 100%">

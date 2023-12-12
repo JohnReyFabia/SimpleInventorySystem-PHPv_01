@@ -45,7 +45,7 @@
                 <?php
 
                 // Fetch inventory data from the database
-                $sql = "SELECT product_id, product_name, product_image FROM product WHERE status = 1";
+                $sql = "SELECT product_id, product_name, product_image,quantity  FROM product WHERE status = 1";
                 $result = $connect->query($sql);
 
                 // Display the inventory in a grid
@@ -56,8 +56,7 @@
                         // Determine the image type based on the file extension
                         $imagePath =  $row['product_image'];
                         echo '<img src="' . $imagePath . '" alt="' . $row['product_name'] . '" style="max-width: 100%;" />';
-                        echo '<p>' . $row['product_name'] . '</p>';
-
+                        echo '<p>' . $row['product_name']." (" . $row['quantity'] .")". '</p>';
                         echo '<button onclick="borrowItem(' . $row['product_id'] . ')"> Add to Borrowed Cart</button>';
                         echo '</div>';
                     }
