@@ -57,7 +57,7 @@
                         $imagePath =  $row['product_image'];
                         echo '<img src="' . $imagePath . '" alt="' . $row['product_name'] . '" style="max-width: 100%;" />';
                         echo '<p>' . $row['product_name']." (" . $row['quantity'] .")". '</p>';
-                        echo '<button onclick="borrowItem(' . $row['product_id'] . ')"> Add to Borrowed Cart</button>';
+                        echo '<button onclick="borrowItem(' . $row['product_id'] . ', '.$row['quantity'].')"> Add to Borrowed Cart</button>';
                         echo '</div>';
                     }
                 }
@@ -75,11 +75,12 @@
 
 
 <script>
-    function borrowItem(productId, currentQuantity = 10){
+    function borrowItem(productId, currentQuantity){
         const quantity = prompt("Enter Quantity");
 
-        if(quantity > currentQuantity) {
+        if(Number(quantity) > Number(currentQuantity)) {
             alert("Error quantity is greater than in stock")
+            return
         }
 
 
@@ -90,19 +91,20 @@
         if(index > -1) {
             const updatedCart = cart.map((item, i) => {
                 if(i === index) {
+
                     return {
                         ...item,
-                        quantity: Number(item.quantity) + Number(quantity)
+                        quantity: Number(item.quantity) + Number(quantity) > currentQuantity ? currentQuantity : Number(item.quantity) + Number(quantity)
                      }
                 }
             return item
             })
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         }else {
-            console.log("asd")
             cart.push({
                 product_id: productId,
-                quantity: Number(quantity)
+                quantity: Number(quantity),
+                selected: true
             })
             console.log(cart)
 

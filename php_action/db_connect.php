@@ -2,7 +2,7 @@
 
 $localhost = "localhost";
 $username = "root";
-$password = "";
+$password = "Arvy@123";
 $dbname = "sinventoryphp";
 $store_url = "http://localhost/SimpleInventorySystem-PHPV_01/";
 // db connection

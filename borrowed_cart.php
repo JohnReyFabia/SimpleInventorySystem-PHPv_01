@@ -15,7 +15,11 @@
             box-sizing: border-box;
             text-align: center;
             border: 1px solid #ddd; /* Border added */
+			cursor: pointer;
         }
+		.item.selected {
+			border: 2px solid #5cb85c;
+		}
 
         .item img {
             max-width: 100%;
@@ -28,6 +32,10 @@
 				top: 12px;
 				right: 15px;
 				color: red;
+			}
+			.button-container {
+				display: flex;
+				justify-content: end;
 			}
     </style>
 
@@ -46,7 +54,7 @@
 				<div class="div-action pull pull-right" style="padding-bottom:20px;">
     
 				<div id="item-container" class="item-container">
-					<div class="item"><img src="assests/images/stock/66505733264b93d799de39.png" alt="Crucible Tong" style="max-width: 100%;"><p>Crucible Tong</p><button onclick="borrowItem(4)"> Add to Borrowed Cart</button></div>
+					<div class="item "><img src="assests/images/stock/66505733264b93d799de39.png" alt="Crucible Tong" style="max-width: 100%;"><p>Crucible Tong</p><button onclick="borrowItem(4)"> Add to Borrowed Cart</button></div>
 				</div>
 				</div> <!-- /div-action -->				
 				
@@ -54,6 +62,9 @@
 			</div> <!-- /panel-body -->
 		</div> <!-- /panel -->		
 	</div> <!-- /col-md-12 -->
+	<div class="col-md-12 button-container">
+		<button type="button" class="btn btn-success" onclick="borrowItems()"> Borrow Selected Items </button>
+	</div>
 </div> <!-- /row -->
 
 
@@ -74,11 +85,12 @@
 
 					const updatedProducts = products.map(item => {
 						const product = cart.find(i => i.product_id == item.product_id)
-
+						
 						if(product) {
 							return {
 								...item,
-								cartQuantity: product.quantity
+								cartQuantity: product.quantity,
+								selected: product.selected
 							}
 						}
 
@@ -86,6 +98,7 @@
 					})
 
 					globalProducts = updatedProducts
+					console.log(globalProducts)
                     // Render the products
                     renderProducts(globalProducts);
                 } else {
@@ -111,6 +124,10 @@
 					const itemDiv = document.createElement('div');
 					itemDiv.classList.add('item');
 
+					if(product.selected) {
+						itemDiv.classList.add('selected');
+					}
+
 					const img = document.createElement('img');
 					img.src = product.product_image;
 					img.alt = product.product_name;
@@ -124,19 +141,22 @@
 
 					const button = document.createElement('button');
 					button.textContent = '-';
-					button.addEventListener('click', function () {
+					button.addEventListener('click', function (e) {
+						e.stopPropagation();
 						minus(product.product_id);
 					});
 
 					const button2 = document.createElement('button');
 					button2.textContent = '+';
-					button2.addEventListener('click', function () {
+					button2.addEventListener('click', function (e) {
+						e.stopPropagation();
 						add(product.product_id, product.quantity);
 					});
 
 					const button3 = document.createElement('button');
 					button3.textContent = 'x';
-					button3.addEventListener('click', function () {
+					button3.addEventListener('click', function (e) {
+						e.stopPropagation();
 						remove(product.product_id);
 					});
 					button3.classList.add("close")
@@ -149,6 +169,10 @@
 					itemDiv.appendChild(button2);
 					itemDiv.appendChild(button3);
 					itemContainer.appendChild(itemDiv);
+
+					itemDiv.addEventListener('click', function () {
+						toggleSelected(product.product_id);
+					});
 				}
             });
         }
@@ -178,7 +202,8 @@
 						if(product) {
 							return {
 								...item,
-								cartQuantity: product.quantity
+								cartQuantity: product.quantity,
+								selected: product.selected
 							}
 						}
 
@@ -216,7 +241,8 @@
 						if(product) {
 							return {
 								...item,
-								cartQuantity: product.quantity
+								cartQuantity: product.quantity,
+								selected: product.selected
 							}
 						}
 
@@ -231,7 +257,6 @@
 
 			const prod = cart.find(item => item.product_id == productId)
 			const updatedCart = cart.filter((item) => item.product_id != productId)
-			console.log(updatedCart)
 
 			localStorage.setItem("cart", JSON.stringify(updatedCart));
 
@@ -241,4 +266,99 @@
 			
 			renderProducts(updatedProducts)
 		}
+
+		function toggleSelected(productId) {
+			const cart = JSON.parse(localStorage.getItem("cart")) || [];
+			const updatedCart = cart.map((item, i) => {
+					if(item.product_id ==	 productId) {
+						return {
+							...item,
+							selected: !item.selected
+						}
+					}
+				return item
+			})
+			localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+			const updatedProducts = globalProducts.map(item => {
+						const product = cart.find(i => i.product_id == item.product_id)
+						if(product ) {
+							return {
+								...item,
+								cartQuantity: product.quantity,
+								selected: product.product_id == productId ? !product.selected : product.selected
+							}
+						}
+
+						return item
+					})
+
+					console.log(updatedProducts.filter(item => cart.find(i => i.product_id == item.product_id)))
+
+			renderProducts(updatedProducts)
+		}
+
+		function borrowItems(){
+
+			const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+			const selectedCartItems = cart.filter(item => item.selected);
+
+			if(selectedCartItems.length === 0) {
+				alert("Please select items to borrow");
+				return;
+			}
+
+			const orderItems = globalProducts
+					.filter(item => selectedCartItems.find(i => i.product_id == item.product_id))
+					.map(item => {
+						const product = selectedCartItems.find(i => i.product_id == item.product_id)
+						
+						if(product) {
+							return {
+								product_id: item.product_id,
+								quantity: product.quantity,
+								brand: item.brand_id,
+							}
+						}
+
+						return item
+					})
+
+				const user = JSON.parse(localStorage.getItem("user")) || {};
+
+				const postData = {
+					user_data: {
+						userId: user.user_id,
+						email: user.email
+						
+					},
+					order_items: orderItems,
+				};
+
+				// Your PHP script URL
+				const phpScriptUrl = 'php_action/createOrderAPI.php';
+
+				// Send the POST request
+				fetch(phpScriptUrl, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(postData),
+				})
+				.then(response => response.json())
+				.then(result => {
+					// Handle the response from the server
+					const remainingCartItems = cart.filter(item => !item.selected);
+					localStorage.setItem("cart", JSON.stringify(remainingCartItems));
+					fetchAndRenderProducts();
+					alert("Order Placed");
+				})
+				.catch(error => {
+					// Handle any errors that occurred during the fetch
+					console.log("error", error)
+					alert(error);
+				});
+			}
 </script>
