@@ -59,7 +59,7 @@ if ($result->num_rows > 0) {
         $category = $row[13];
         $location = $row[14];
 
-        $imageUrl = substr($row[2], 3);
+        $imageUrl = $row[2];
         $productImage = "<img class='img-round' src='" . $imageUrl . "' style='height:30px; width:50px;' />";
 
         $output['data'][] = array(

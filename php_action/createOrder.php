@@ -48,19 +48,25 @@ if ($_POST) {
 
 
 
-	// Insert order item data into the order_item table
-	for ($i = 0; $i < count($productName); $i++) {
-		$product = $productName[$i];
-		$category = $categoryId[$i];
-		$quantityItem = $quantity[$i];
-		$totalItem = $total[$i];
-		$currentSize = $size[$i];
+// Insert order item data into the order_item table
+for ($i = 0; $i < count($productName); $i++) {
+    $product = $productName[$i];
+    $category = $categoryId[$i];
+    $quantityItem = $quantity[$i];
+    $totalItem = $total[$i];
+    $currentSize = $size[$i];
 
-		$orderItemSql = "INSERT INTO order_item ( order_id, product_id, brand, quantity, total) 
-						 VALUES ( '$orderId', '$product', '$currentSize', '$quantityItem', '$totalItem')";
+    // Insert order item into the order_item table
+    $orderItemSql = "INSERT INTO order_item (order_id, product_id, brand, quantity, total) 
+                     VALUES ('$orderId', '$product', '$currentSize', '$quantityItem', '$totalItem')";
+    $connect->query($orderItemSql);
 
-		$connect->query($orderItemSql);
-	}
+    // Insert borrowing history
+    $borrowHistorySql = "INSERT INTO borrow_history (order_id, product_id, quantity_borrowed) 
+                         VALUES ('$orderId', '$product', '$quantityItem')";
+    $connect->query($borrowHistorySql);
+}
+
 
 	// If everything was successful, send a success message
 	$response = array(

@@ -30,45 +30,83 @@
 <body>
 
 <div class="row">
-	<div class="col-md-12">
-	
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<div class="page-heading"> <i class="glyphicon glyphicon-edit"></i> List of Equipment</div>
-			</div> <!-- /panel-heading -->
-			<div class="panel-body">
+    <div class="col-md-12">
 
-				<div class="remove-messages"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="page-heading"> <i class="glyphicon glyphicon-edit"></i> List of Equipment</div>
+            </div> <!-- /panel-heading -->
+            <div class="panel-body">
 
-				<div class="div-action pull pull-right" style="padding-bottom:20px;">
-				
-				<?php	
-		
-				// Fetch inventory data from the database
-				$sql = "SELECT product_id, product_name, product_image FROM product WHERE status = 1";
-				$result = $connect->query($sql);
-			
-// Display the inventory in a grid
-echo '<div class="item-container">';
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo '<div class="item">';
-		echo '<img src= assests\images\stock\ '. $row['product_image'] . '" alt="' . $row['product_name'] . '" style="max-width: 100%;">';
-        echo '<p>' . $row['product_name'] . '</p>';
+                <div class="remove-messages"></div>
 
-        echo '<button onclick="borrowItem(' . $row['product_id'] . ')"> Add to Borrowed Cart</button>';
-        echo '</div>';
-    }
-}  
+                <div class="div-action pull pull-right" style="padding-bottom:20px;">
 
-?>
+                <?php
 
+                // Fetch inventory data from the database
+                $sql = "SELECT product_id, product_name, product_image,quantity  FROM product WHERE status = 1";
+                $result = $connect->query($sql);
 
-    
-				</div> <!-- /div-action -->				
-				
+                // Display the inventory in a grid
+                echo '<div class="item-container">';
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo '<div class="item">';
+                        // Determine the image type based on the file extension
+                        $imagePath =  $row['product_image'];
+                        echo '<img src="' . $imagePath . '" alt="' . $row['product_name'] . '" style="max-width: 100%;" />';
+                        echo '<p>' . $row['product_name']." (" . $row['quantity'] .")". '</p>';
+                        echo '<button onclick="borrowItem(' . $row['product_id'] . ')"> Add to Borrowed Cart</button>';
+                        echo '</div>';
+                    }
+                }
 
-			</div> <!-- /panel-body -->
-		</div> <!-- /panel -->		
-	</div> <!-- /col-md-12 -->
+                ?>
+                </div> <!-- /div-action -->
+
+            </div> <!-- /panel-body -->
+        </div> <!-- /panel -->
+    </div> <!-- /col-md-12 -->
 </div> <!-- /row -->
+
+</body>
+</html>
+
+
+<script>
+    function borrowItem(productId, currentQuantity = 10){
+        const quantity = prompt("Enter Quantity");
+
+        if(quantity > currentQuantity) {
+            alert("Error quantity is greater than in stock")
+        }
+
+
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const index = cart.findIndex(item => item.product_id === productId)
+        console.log(index)
+        if(index > -1) {
+            const updatedCart = cart.map((item, i) => {
+                if(i === index) {
+                    return {
+                        ...item,
+                        quantity: Number(item.quantity) + Number(quantity)
+                     }
+                }
+            return item
+            })
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        }else {
+            console.log("asd")
+            cart.push({
+                product_id: productId,
+                quantity: Number(quantity)
+            })
+            console.log(cart)
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+    }
+</script>

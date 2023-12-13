@@ -120,8 +120,12 @@ if($_POST) {
 								<div class="form-group">
 									<div class="col-sm-offset-2 col-sm-10">
 									  <button type="submit" class="btn btn-success"> <i class="glyphicon glyphicon-log-in"></i> Log In</button>
+									  
 									</div>
-									<a href = "signup.php">Do not have an account?</a>					
+									 <a href = "signup.php">		Do not have an account?</a>
+									
+
+													
 </div>
 							</fieldset>
 						</form>
