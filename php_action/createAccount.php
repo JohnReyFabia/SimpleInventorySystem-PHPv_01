@@ -38,15 +38,15 @@ if($_POST) {
 		$user_id = $connect->insert_id;
 
 		// Insert into s_users table without sanitization (vulnerable to SQL injection)
-		$sql = "INSERT INTO s_users (user_id, fname, lname, college, program, year_level) 
-				VALUES ('$user_id', '$firstname', '$lastname', '$college', '$program', '$yearlevel')";
+		$sql = "INSERT INTO s_users (user_id, fname, lname, emailadd, college, program, year_level) 
+				VALUES ('$user_id', '$firstname', '$lastname', '$emailadd', '$college', '$program', '$yearlevel')";
 
 		if ($connect->query($sql) === FALSE) {
 			echo "Error: " . $connect->error;
 			return;
 		}
 
-	echo '<script>alert("' . $valid['messages'] . '"); window.location.href = "../signup.php";</script>';
+	echo '<script>alert("Account Created"); window.location.href = "../";</script>';
 } $connect->close();
 
 

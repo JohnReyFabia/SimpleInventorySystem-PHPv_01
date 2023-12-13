@@ -42,10 +42,11 @@ if($_POST) {
 				// Check if it's the first row in the 'users' table
 				$isFirstRow = $value['user_id'] == 1; // Change '1' to the actual user_id of the first row
 
+
 				if ($isFirstRow) {
-					header('location:'.$store_url.'dashboard.php');
+					echo '<script> localStorage.setItem("user", JSON.stringify('. json_encode($value).')); window.location.href = "dashboard.php";</script>';
 				} else {
-					header('location:'.$store_url.'S_dashboard.php');
+					echo '<script>localStorage.setItem("user", JSON.stringify('. json_encode($value).'));window.location.href = "S_dashboard.php";</script>';
 				}
 			} else{
 				
