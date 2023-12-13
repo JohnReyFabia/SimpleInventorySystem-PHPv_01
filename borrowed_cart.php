@@ -269,9 +269,8 @@
 
 		function toggleSelected(productId) {
 			const cart = JSON.parse(localStorage.getItem("cart")) || [];
-			const index = cart.findIndex(item => item.product_id ==	 productId)
 			const updatedCart = cart.map((item, i) => {
-					if(i === index) {
+					if(item.product_id ==	 productId) {
 						return {
 							...item,
 							selected: !item.selected
@@ -283,16 +282,18 @@
 
 			const updatedProducts = globalProducts.map(item => {
 						const product = cart.find(i => i.product_id == item.product_id)
-						if(product) {
+						if(product ) {
 							return {
 								...item,
 								cartQuantity: product.quantity,
-								selected: !product.selected
+								selected: product.product_id == productId ? !product.selected : product.selected
 							}
 						}
 
 						return item
 					})
+
+					console.log(updatedProducts.filter(item => cart.find(i => i.product_id == item.product_id)))
 
 			renderProducts(updatedProducts)
 		}
